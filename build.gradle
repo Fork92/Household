@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+  }
+
+group = "de.becker.household"
+version = "1.0.0-SNAPSHOT"
+
+subprojects {
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+    }
+
+    sourceCompatibility = JavaVersion.VERSION_23.toString()
+    targetCompatibility = JavaVersion.VERSION_23.toString()
+
+    dependencies {
+        implementation platform('jakarta.platform:jakarta.jakartaee-bom:10.0.0')
+      }
+}
