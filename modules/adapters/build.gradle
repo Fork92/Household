@@ -11,4 +11,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.34'
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
 
+    testImplementation 'com.h2database:h2:2.3.232'
+    testImplementation 'org.hibernate:hibernate-core:6.6.4.Final'
+
 }
