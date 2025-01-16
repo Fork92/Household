@@ -53,10 +53,10 @@ jobs:
       run: ./gradlew test
       
     - name: Upload Test Results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-results
-        path: build/test-results/test/
+        path: '**/build/test-results/test/*.xml'
 
   dependency-submission:
 
