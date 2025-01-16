@@ -1,4 +1,4 @@
-package de.becker.household.adapters.out;
+package de.becker.household.adapters.out.encoder;
 
 import com.password4j.Argon2Function;
 import com.password4j.Password;

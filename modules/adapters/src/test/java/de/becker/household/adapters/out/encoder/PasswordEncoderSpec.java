@@ -1,4 +1,4 @@
-package de.becker.household.adapters.out;
+package de.becker.household.adapters.out.encoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

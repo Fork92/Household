@@ -2,4 +2,9 @@ dependencies {
     implementation project(":modules:domain")
     implementation project(":modules:adapters")
     implementation project(":modules:application")
+
+    implementation 'jakarta.platform:jakarta.jakartaee-web-api:10.0.0'
+    compileOnly 'org.projectlombok:lombok:1.18.34'
+
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
 }
