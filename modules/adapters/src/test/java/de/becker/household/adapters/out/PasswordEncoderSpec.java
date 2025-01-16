@@ -1,8 +1,12 @@
 package de.becker.household.adapters.out;
 
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)
 public class PasswordEncoderSpec {
   private PasswordEncoder passwordEncoder;
 
@@ -10,6 +14,6 @@ public class PasswordEncoderSpec {
   public void testHashPassword() {
     passwordEncoder = new PasswordEncoder();
     String hash = passwordEncoder.encode("Test123");
-    Assertions.assertThat(passwordEncoder.matches("Test123", hash)).isTrue();
+    assertThat(passwordEncoder.matches("Test123", hash)).isTrue();
   }
 }
