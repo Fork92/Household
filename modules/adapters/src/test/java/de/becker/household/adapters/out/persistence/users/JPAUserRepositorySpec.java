@@ -57,6 +57,20 @@ public class JPAUserRepositorySpec {
     User saved = repository.save(user);
 
     assertThat(saved.getId()).isGreaterThan(0L);
+    assertThat(saved.getUsername()).isSameAs(user.getUsername());
+    assertThat(saved.getPasswordHash()).isSameAs(user.getPasswordHash());
+  }
+
+  @Test
+  void testUpdateUser() {
+    User user = new User(0L, "TestUser", "secret");
+    User saved = repository.save(user);
+    saved.setUsername("TestUser123");
+    User updated = repository.save(saved);
+
+    assertThat(updated.getId()).isSameAs(saved.getId());
+    assertThat(updated.getUsername()).isNotSameAs(user.getUsername());
+    assertThat(updated.getUsername()).isSameAs("TestUser123");
   }
 
 }
