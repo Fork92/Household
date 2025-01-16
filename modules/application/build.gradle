@@ -1,4 +1,13 @@
 
 dependencies {
     implementation project(':modules:domain')
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.3'
+    testImplementation 'org.assertj:assertj-core:3.26.3'
+    testImplementation 'org.mockito:mockito-core:5.11.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.12.0'
+}
+
+test {
+    useJUnitPlatform()
 }
