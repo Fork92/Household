@@ -12,7 +12,7 @@ public class RegisterService implements RegisterUseCase {
     private final UserRepository userRepository;
     private final UserPasswordEncoder userPasswordEncoder;
 
-    RegisterService(UserRepository userRepository,
+    public RegisterService(UserRepository userRepository,
                     UserPasswordEncoder userPasswordEncoder) {
         this.userRepository = userRepository;
         this.userPasswordEncoder = userPasswordEncoder;
