@@ -6,6 +6,10 @@ public class Household {
   private long id;
   private Set<Budget> budgets;
 
+  public Household(long id) {
+    this.id = id;
+  }
+
   public long getId() {
     return id;
   }
