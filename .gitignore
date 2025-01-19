@@ -12,3 +12,5 @@ gradle-app.setting
 .project
 .classpath
 
+modules/adapters/.factorypath
+modules/infrastructure/.factorypath

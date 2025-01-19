@@ -5,7 +5,9 @@ import com.password4j.Password;
 import com.password4j.types.Argon2;
 
 import de.becker.household.application.port.out.UserPasswordEncoder;
+import jakarta.enterprise.context.ApplicationScoped;
 
+@ApplicationScoped
 public class PasswordEncoder implements UserPasswordEncoder {
 
   private final Argon2Function ARGON2_FUNCTION = Argon2Function.getInstance(

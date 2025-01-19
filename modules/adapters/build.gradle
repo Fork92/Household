@@ -7,8 +7,17 @@ dependencies {
     implementation project(':modules:application')
 
     implementation 'com.password4j:password4j:1.8.2'
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
     compileOnly 'jakarta.platform:jakarta.jakartaee-web-api:10.0.0'
     compileOnly 'org.projectlombok:lombok:1.18.34'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-orgjson:0.12.6'
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
+
+    testImplementation 'com.h2database:h2:2.3.232'
+    testImplementation 'org.hibernate:hibernate-core:6.6.4.Final'
+    testImplementation 'jakarta.platform:jakarta.jakartaee-web-api:10.0.0'
+    testImplementation 'org.glassfish.jersey.core:jersey-server:3.1.7'
+    testImplementation 'org.eclipse:yasson:3.0.3'
 
 }
