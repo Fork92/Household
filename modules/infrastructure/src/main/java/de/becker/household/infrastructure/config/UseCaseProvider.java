@@ -13,21 +13,21 @@ import jakarta.inject.Inject;
 @ApplicationScoped
 public class UseCaseProvider {
 
-    @Inject
-    private UserRepository userRepository;
-    @Inject
-    private UserPasswordEncoder userPasswordEncoder;
+  @Inject
+  private UserRepository userRepository;
+  @Inject
+  private UserPasswordEncoder userPasswordEncoder;
 
-    @Produces
-    @ApplicationScoped
-    public LoginUseCase loginUseCase() {
-        return new LoginService(userRepository, userPasswordEncoder);
-    }
+  @Produces
+  @ApplicationScoped
+  public LoginUseCase loginUseCase() {
+    return new LoginService(userRepository, userPasswordEncoder);
+  }
 
-    @Produces
-    @ApplicationScoped
-    public RegisterUseCase registerUseCase() {
-        return new RegisterService(userRepository, userPasswordEncoder);
-    }
+  @Produces
+  @ApplicationScoped
+  public RegisterUseCase registerUseCase() {
+    return new RegisterService(userRepository, userPasswordEncoder);
+  }
 
 }

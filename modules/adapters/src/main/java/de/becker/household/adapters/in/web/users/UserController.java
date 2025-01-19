@@ -2,6 +2,9 @@ package de.becker.household.adapters.in.web.users;
 
 import java.util.Collections;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.becker.household.adapters.out.encoder.JwtService;
 import de.becker.household.application.port.in.user.LoginCommand;
 import de.becker.household.application.port.in.user.LoginUseCase;
@@ -23,54 +26,58 @@ import jakarta.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 public class UserController {
 
-    @Inject
-    private RegisterUseCase registerUseCase;
-    @Inject
-    private LoginUseCase loginUseCase;
-    @Inject
-    private JwtService jwtService;
+  @Inject
+  private RegisterUseCase registerUseCase;
+  @Inject
+  private LoginUseCase loginUseCase;
+  @Inject
+  private JwtService jwtService;
 
-    @POST
-    @Path("/register")
-    public Response registerUser(UserJson body) {
-        RegisterCommand command = new RegisterCommand(body.username(), body.password());
-        try {
-            User user = registerUseCase.execute(command);
+  public static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
-            if (user == null) {
-                return Response.status(Response.Status.BAD_REQUEST)
-                               .build();
-            }
+  @POST
+  @Path("/register")
+  public Response registerUser(UserJson body) {
+    RegisterCommand command = new RegisterCommand(body.username(), body.password());
+    try {
+      User user = registerUseCase.execute(command);
 
-            String token = jwtService.generateToken(Collections.emptyMap(), user.getUsername());
+      if (user == null) {
+        return Response.status(Response.Status.BAD_REQUEST)
+            .build();
+      }
 
-            return Response.ok(new TokenJson(token))
-                           .build();
-        } catch (RegistrationException re) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                           .build();
-        }
+      String token = jwtService.generateToken(Collections.emptyMap(), user.getUsername());
+
+      return Response.ok(new TokenJson(token))
+          .build();
+    } catch (RegistrationException re) {
+      return Response.status(Response.Status.BAD_REQUEST)
+          .build();
     }
+  }
 
-    @POST
-    @Path("/login")
-    public Response loginUser(UserJson body) {
-        LoginCommand command = new LoginCommand(body.username(), body.password());
-        try {
-            User user = loginUseCase.execute(command);
+  @POST
+  @Path("/login")
+  public Response loginUser(UserJson body) {
+    LoginCommand command = new LoginCommand(body.username(), body.password());
+    try {
+      User user = loginUseCase.execute(command);
 
-            if (user == null) {
-                return Response.status(Response.Status.BAD_REQUEST)
-                               .build();
-            }
+      if (user == null) {
+        LOG.info("No user found for username " + command.username());
+        return Response.status(Response.Status.BAD_REQUEST)
+            .build();
+      }
 
-            String token = jwtService.generateToken(Collections.emptyMap(), user.getUsername());
+      String token = jwtService.generateToken(Collections.emptyMap(), user.getUsername());
 
-            return Response.ok(new TokenJson(token))
-                           .build();
-        } catch (AuthenticationException ae) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                           .build();
-        }
+      return Response.ok(new TokenJson(token))
+          .build();
+    } catch (AuthenticationException ae) {
+      LOG.info(ae.getMessage());
+      return Response.status(Response.Status.BAD_REQUEST)
+          .build();
     }
+  }
 }

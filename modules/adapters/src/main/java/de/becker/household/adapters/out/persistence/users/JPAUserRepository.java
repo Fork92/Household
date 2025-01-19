@@ -6,12 +6,13 @@ import de.becker.household.application.port.out.UserRepository;
 import de.becker.household.domain.model.User;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceUnit;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
 
 @Stateless
 public class JPAUserRepository implements UserRepository {
 
-  @PersistenceUnit(unitName = "hosuehold-pu")
+  @PersistenceContext(unitName = "household-pu")
   private EntityManager em;
 
   public void setEntityManager(final EntityManager em) {
@@ -26,8 +27,16 @@ public class JPAUserRepository implements UserRepository {
 
   @Override
   public Optional<User> findByUsername(String username) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'findByUsername'");
+    try {
+      UserEntity entity = em.createNamedQuery(UserEntity.FIND_BY_USERNAME, UserEntity.class)
+          .setParameter("username", username).getSingleResult();
+
+      User user = UserMapper.mapToDomain(entity);
+      return Optional.ofNullable(user);
+    } catch (NoResultException ex) {
+      return Optional.empty();
+    }
+
   }
 
 }
