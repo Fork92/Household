@@ -17,43 +17,43 @@ import de.becker.household.domain.model.User;
 
 public class CreateBudgetService implements CreateBudgetUseCase {
 
-    private UserRepository userRepository;
-    private BudgetRepository budgetRepository;
+  private UserRepository userRepository;
+  private BudgetRepository budgetRepository;
 
-    public CreateBudgetService(UserRepository userRepository, BudgetRepository budgetRepository) {
-        this.userRepository = userRepository;
-        this.budgetRepository = budgetRepository;
+  public CreateBudgetService(UserRepository userRepository, BudgetRepository budgetRepository) {
+    this.userRepository = userRepository;
+    this.budgetRepository = budgetRepository;
+  }
+
+  @Override
+  public Budget execute(CreateBudgetCommand command) {
+    User user = checkIfUserExist(command.username());
+    checkBudgetDate(user, command.date());
+
+    return new Budget(0L, command.date(), command.budget(), user.household().id());
+  }
+
+  private User checkIfUserExist(final String username) {
+    Optional<User> user = userRepository.findByUsername(username);
+    if (user.isPresent()) {
+      return user.get();
     }
+    throw new AuthenticationException("User not found");
+  }
 
-    @Override
-    public Budget execute(CreateBudgetCommand command) {
-        User user = checkIfUserExist(command.username());
-        checkBudgetDate(user, command.date());
+  private void checkBudgetDate(final User user,
+      final LocalDate date) {
+    Household household = user.household();
+    household.budgets().addAll(budgetRepository.findByHouseholdId(household.id()));
 
-        return new Budget(0L, command.date(), command.budget(), household.id());
+    Optional<Budget> optionalBudget = household.budgets()
+        .stream()
+        .filter(budget -> budget.getDate()
+            .equals(date))
+        .findFirst();
+
+    if (optionalBudget.isPresent()) {
+      throw new BudgetExistException("Budget for Date already exists");
     }
-
-    private User checkIfUserExist(final String username) {
-        Optional<User> user = userRepository.findByUsername(username);
-        if (user.isPresent()) {
-            return user.get();
-        }
-        throw new AuthenticationException("User not found");
-    }
-
-    private void checkBudgetDate(final User user,
-                                 final LocalDate date) {
-        Household household = user.household();
-        household.budgets().addAll(budgetRepository.findByHouseholdId(household.id()));
-
-        Optional<Budget> optionalBudget = household.budgets()
-                                          .stream()
-                                          .filter(budget -> budget.getDate()
-                                                                  .equals(date))
-                                          .findFirst();
-
-        if (optionalBudget.isPresent()) {
-            throw new BudgetExistException("Budget for Date already exists");
-        }
-    }
+  }
 }
