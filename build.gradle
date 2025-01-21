@@ -1,7 +1,13 @@
 plugins {
     id 'java'
     id 'java-library'
+    id 'jacoco'
   }
+
+  repositories {
+      mavenCentral()
+    }
+
 
 group = "de.becker.household"
 version = "1.0.0-SNAPSHOT"
@@ -9,6 +15,7 @@ version = "1.0.0-SNAPSHOT"
 subprojects {
     apply plugin: 'java'
     apply plugin: 'java-library'
+    apply plugin: 'jacoco'
 
     repositories {
         mavenCentral()
@@ -20,9 +27,22 @@ subprojects {
         }
     }
 
+    jacoco {
+        toolVersion = '0.8.12'
+      }
+
     test {
         useJUnitPlatform()
+        finalizedBy jacocoTestReport
     }
+
+    jacocoTestReport {
+        dependsOn test
+        reports {
+            xml.required = true
+            html.required = true
+          }
+      }
 
     dependencies {
         implementation platform('jakarta.platform:jakarta.jakartaee-bom:10.0.0')
