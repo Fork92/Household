@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -18,13 +19,13 @@ import de.becker.household.domain.exceptions.AuthenticationException;
 import de.becker.household.domain.model.User;
 
 @ExtendWith(MockitoExtension.class)
-class LoginServiceSpec {
+class LoginServiceTest {
 
   @Mock
   private UserRepository userRepository;
   @Mock
   private UserPasswordEncoder userPasswordEncoder;
-
+  @InjectMocks
   private LoginService loginService;
 
   @Test
@@ -33,7 +34,6 @@ class LoginServiceSpec {
     when(userRepository.findByUsername("testUser")).thenReturn(Optional.of(expectedUser));
     when(userPasswordEncoder.matches("secretPassword", "secret")).thenReturn(true);
 
-    loginService = new LoginService(userRepository, userPasswordEncoder);
     LoginCommand command = new LoginCommand("testUser", "secretPassword");
     User user = loginService.execute(command);
 
@@ -46,7 +46,6 @@ class LoginServiceSpec {
     when(userRepository.findByUsername("testUser")).thenReturn(Optional.of(expectedUser));
     when(userPasswordEncoder.matches("secretPassword", "secret")).thenReturn(false);
 
-    loginService = new LoginService(userRepository, userPasswordEncoder);
     LoginCommand command = new LoginCommand("testUser", "secretPassword");
 
     assertThatThrownBy(() -> loginService.execute(command)).isInstanceOf(AuthenticationException.class)
@@ -57,7 +56,6 @@ class LoginServiceSpec {
   public void testLoginUserShouldFailWithInvalidPassword() {
     when(userRepository.findByUsername("testUser")).thenReturn(Optional.empty());
 
-    loginService = new LoginService(userRepository, userPasswordEncoder);
     LoginCommand command = new LoginCommand("testUser", "secretPassword");
 
     assertThatThrownBy(() -> loginService.execute(command)).isInstanceOf(AuthenticationException.class)

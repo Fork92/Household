@@ -22,7 +22,7 @@ import de.becker.household.domain.model.Household;
 import de.becker.household.domain.model.User;
 
 @ExtendWith(MockitoExtension.class)
-public class RegisterServiceSpec {
+public class RegisterServiceTest {
 
   @Mock
   private UserRepository userRepository;

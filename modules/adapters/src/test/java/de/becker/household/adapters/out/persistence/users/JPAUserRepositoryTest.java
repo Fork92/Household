@@ -20,7 +20,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
 @ExtendWith(MockitoExtension.class)
-public class JPAUserRepositorySpec {
+public class JPAUserRepositoryTest {
 
   private static EntityManagerFactory emf;
   private EntityManager em;
@@ -67,7 +67,7 @@ public class JPAUserRepositorySpec {
     assertThat(saved.getId()).isGreaterThan(0L);
     assertThat(saved.getUsername()).isSameAs(user.getUsername());
     assertThat(saved.getPasswordHash()).isSameAs(user.getPasswordHash());
-  }
+ }
 
   @Test
   void testUpdateUser() {
@@ -91,6 +91,12 @@ public class JPAUserRepositorySpec {
     assertThat(found.isPresent()).isTrue();
     assertThat(found.get().getId()).isGreaterThan(0);
     assertThat(found.get().getHousehold()).isNotNull();
+  }
 
+  @Test
+  void testFindByUsernameReturnEmptyOptional() {
+    Optional<User> found = repository.findByUsername("TestUser");
+
+    assertThat(found.isPresent()).isFalse();
   }
 }
