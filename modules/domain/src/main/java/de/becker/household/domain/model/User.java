@@ -6,10 +6,11 @@ public class User {
   private String passwordHash;
   private Household household;
 
-  public User(long id, String username, String passwordHash) {
+  public User(final long id, final String username, final String passwordHash, final Household household) {
     this.id = id;
     this.username = username;
     this.passwordHash = passwordHash;
+    this.household = household;
   }
 
   public long getId() {

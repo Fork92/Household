@@ -2,6 +2,8 @@ package de.becker.household.adapters.out.persistence.users;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import de.becker.household.adapters.out.persistence.households.JPAHouseholdRepository;
+import de.becker.household.domain.model.Household;
 import de.becker.household.domain.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -21,6 +25,7 @@ public class JPAUserRepositorySpec {
   private static EntityManagerFactory emf;
   private EntityManager em;
   private JPAUserRepository repository;
+  private JPAHouseholdRepository householdRepository;
 
   @BeforeAll
   static void setupBeforeAll() {
@@ -39,6 +44,9 @@ public class JPAUserRepositorySpec {
     em = emf.createEntityManager();
     repository = new JPAUserRepository();
     repository.setEntityManager(em);
+
+    householdRepository = new JPAHouseholdRepository();
+    householdRepository.setEntityManager(em);
     em.getTransaction().begin();
   }
 
@@ -53,7 +61,7 @@ public class JPAUserRepositorySpec {
 
   @Test
   void testSaveNewUser() {
-    User user = new User(0L, "TestUser", "secret");
+    User user = new User(0L, "TestUser", "secret", null);
     User saved = repository.save(user);
 
     assertThat(saved.getId()).isGreaterThan(0L);
@@ -63,7 +71,7 @@ public class JPAUserRepositorySpec {
 
   @Test
   void testUpdateUser() {
-    User user = new User(0L, "TestUser", "secret");
+    User user = new User(0L, "TestUser", "secret", null);
     User saved = repository.save(user);
     saved.setUsername("TestUser123");
     User updated = repository.save(saved);
@@ -73,4 +81,16 @@ public class JPAUserRepositorySpec {
     assertThat(updated.getUsername()).isSameAs("TestUser123");
   }
 
+  @Test
+  void testFindByUsername() {
+    Household household = householdRepository.save(new Household(0));
+    repository.save(new User(0, "TestUser", "secret", household));
+
+    Optional<User> found = repository.findByUsername("TestUser");
+
+    assertThat(found.isPresent()).isTrue();
+    assertThat(found.get().getId()).isGreaterThan(0);
+    assertThat(found.get().getHousehold()).isNotNull();
+
+  }
 }

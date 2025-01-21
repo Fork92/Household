@@ -2,9 +2,11 @@ package de.becker.household.adapters.out.persistence.households;
 
 import de.becker.household.application.port.out.households.HouseholdRepository;
 import de.becker.household.domain.model.Household;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
+@Stateless
 public class JPAHouseholdRepository implements HouseholdRepository {
 
   @PersistenceContext(unitName = "household-pu")
