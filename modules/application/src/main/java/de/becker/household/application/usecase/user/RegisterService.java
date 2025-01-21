@@ -3,7 +3,7 @@ package de.becker.household.application.usecase.user;
 import de.becker.household.application.port.in.user.RegisterCommand;
 import de.becker.household.application.port.in.user.RegisterUseCase;
 import de.becker.household.application.port.out.UserPasswordEncoder;
-import de.becker.household.application.port.out.UserRepository;
+import de.becker.household.application.port.out.users.UserRepository;
 import de.becker.household.application.port.out.households.HouseholdRepository;
 import de.becker.household.domain.exceptions.RegistrationException;
 import de.becker.household.domain.model.Household;
@@ -36,7 +36,7 @@ public class RegisterService implements RegisterUseCase {
   }
 
   private Household createHousehold() {
-    return this.householdRepository.save(new Household(0));
+    return this.householdRepository.save(new Household(0, null));
   }
 
   private void checkIfUserAlreadyExists(final String username) {

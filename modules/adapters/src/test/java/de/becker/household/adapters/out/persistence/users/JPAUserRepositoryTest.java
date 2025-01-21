@@ -64,33 +64,32 @@ public class JPAUserRepositoryTest {
     User user = new User(0L, "TestUser", "secret", null);
     User saved = repository.save(user);
 
-    assertThat(saved.getId()).isGreaterThan(0L);
-    assertThat(saved.getUsername()).isSameAs(user.getUsername());
-    assertThat(saved.getPasswordHash()).isSameAs(user.getPasswordHash());
+    assertThat(saved.id()).isGreaterThan(0L);
+    assertThat(saved.username()).isSameAs(user.username());
+    assertThat(saved.passwordHash()).isSameAs(user.passwordHash());
  }
 
   @Test
   void testUpdateUser() {
     User user = new User(0L, "TestUser", "secret", null);
     User saved = repository.save(user);
-    saved.setUsername("TestUser123");
-    User updated = repository.save(saved);
+    User updated = repository.save(new User(saved.id(), "TestUser123", saved.passwordHash(), saved.household()));
 
-    assertThat(updated.getId()).isSameAs(saved.getId());
-    assertThat(updated.getUsername()).isNotSameAs(user.getUsername());
-    assertThat(updated.getUsername()).isSameAs("TestUser123");
+    assertThat(updated.id()).isSameAs(saved.id());
+    assertThat(updated.username()).isNotSameAs(user.username());
+    assertThat(updated.username()).isSameAs("TestUser123");
   }
 
   @Test
   void testFindByUsername() {
-    Household household = householdRepository.save(new Household(0));
+    Household household = householdRepository.save(new Household(0, null));
     repository.save(new User(0, "TestUser", "secret", household));
 
     Optional<User> found = repository.findByUsername("TestUser");
 
     assertThat(found.isPresent()).isTrue();
-    assertThat(found.get().getId()).isGreaterThan(0);
-    assertThat(found.get().getHousehold()).isNotNull();
+    assertThat(found.get().id()).isGreaterThan(0);
+    assertThat(found.get().household()).isNotNull();
   }
 
   @Test

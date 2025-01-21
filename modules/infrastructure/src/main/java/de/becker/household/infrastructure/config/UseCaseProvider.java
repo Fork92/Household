@@ -3,7 +3,7 @@ package de.becker.household.infrastructure.config;
 import de.becker.household.application.port.in.user.LoginUseCase;
 import de.becker.household.application.port.in.user.RegisterUseCase;
 import de.becker.household.application.port.out.UserPasswordEncoder;
-import de.becker.household.application.port.out.UserRepository;
+import de.becker.household.application.port.out.users.UserRepository;
 import de.becker.household.application.port.out.households.HouseholdRepository;
 import de.becker.household.application.usecase.user.LoginService;
 import de.becker.household.application.usecase.user.RegisterService;

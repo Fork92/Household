@@ -15,15 +15,15 @@ class UserMapperTest {
 
     @Test
     void testMapToEntity() {
-        final User user = new User(123L, "TestUser", "secret", new Household(321L));
+        final User user = new User(123L, "TestUser", "secret", new Household(321L, null));
         final UserEntity entity = UserMapper.mapToEntity(user);
 
-        assertThat(entity.getId()).isEqualTo(user.getId());
-        assertThat(entity.getUsername()).isEqualTo(user.getUsername());
-        assertThat(entity.getPasswordHash()).isEqualTo(user.getPasswordHash());
+        assertThat(entity.getId()).isEqualTo(user.id());
+        assertThat(entity.getUsername()).isEqualTo(user.username());
+        assertThat(entity.getPasswordHash()).isEqualTo(user.passwordHash());
         assertThat(entity.getHousehold()).isNotNull();
     }
-    
+
 
     @Test
     void testReturnNullInCaseOfNullUser() {
@@ -38,10 +38,10 @@ class UserMapperTest {
         final UserEntity entity = new UserEntity(123L, "TestUser", "secret", new HouseholdEntity(321L));
         final User user = UserMapper.mapToDomain(entity);
 
-        assertThat(user.getId()).isEqualTo(entity.getId());
-        assertThat(user.getUsername()).isEqualTo(entity.getUsername());
-        assertThat(user.getPasswordHash()).isEqualTo(entity.getPasswordHash());
-        assertThat(user.getHousehold()).isNotNull();
+        assertThat(user.id()).isEqualTo(entity.getId());
+        assertThat(user.username()).isEqualTo(entity.getUsername());
+        assertThat(user.passwordHash()).isEqualTo(entity.getPasswordHash());
+        assertThat(user.household()).isNotNull();
     }
 
     @Test

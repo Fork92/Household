@@ -35,7 +35,7 @@ public class RegisterServiceTest {
 
   @Test
   public void testRegisterNewUser() {
-    Household expectedHousehold = new Household(1L);
+    Household expectedHousehold = new Household(1L, null);
     User expectedUser = new User(1L, "username", "secret", expectedHousehold);
     when(householdRepository.save(any(Household.class))).thenReturn(expectedHousehold);
     when(userRepository.save(any(User.class))).thenReturn(expectedUser);

@@ -8,7 +8,7 @@ public class HouseholdMapper {
     if (entity == null) {
       return null;
     }
-    return new Household(entity.getId() == null ? 0 : entity.getId());
+    return new Household(entity.getId() == null ? 0 : entity.getId(), null);
   }
 
   public static HouseholdEntity mapToEntity(final Household household) {
@@ -16,7 +16,7 @@ public class HouseholdMapper {
       return null;
     }
 
-    return new HouseholdEntity(household.getId() == 0 ? null : household.getId());
+    return new HouseholdEntity(household.id() == 0 ? null : household.id());
   }
 
 }

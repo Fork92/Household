@@ -1,29 +1,6 @@
 package de.becker.household.domain.model;
 
-import java.util.Set;
+import java.util.List;
 
-public class Household {
-  private long id;
-  private Set<Budget> budgets;
-
-  public Household(long id) {
-    this.id = id;
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
-  public Set<Budget> getBudgets() {
-    return budgets;
-  }
-
-  public void setBudgets(Set<Budget> budgets) {
-    this.budgets = budgets;
-  }
-
+public record Household(long id, List<Budget> budgets) {
 }

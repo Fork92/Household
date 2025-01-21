@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import de.becker.household.application.port.in.user.LoginCommand;
 import de.becker.household.application.port.in.user.LoginUseCase;
 import de.becker.household.application.port.out.UserPasswordEncoder;
-import de.becker.household.application.port.out.UserRepository;
+import de.becker.household.application.port.out.users.UserRepository;
 import de.becker.household.domain.exceptions.AuthenticationException;
 import de.becker.household.domain.model.User;
 
@@ -26,7 +26,7 @@ public class LoginService implements LoginUseCase {
   @Override
   public User execute(LoginCommand command) {
     User user = checkUsername(command.username());
-    checkPassword(command.password(), user.getPasswordHash());
+    checkPassword(command.password(), user.passwordHash());
     return user;
   }
 

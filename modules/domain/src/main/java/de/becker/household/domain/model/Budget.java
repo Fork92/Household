@@ -1,6 +1,8 @@
 package de.becker.household.domain.model;
 
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.Year;
 import java.util.Set;
 import java.math.BigDecimal;
 
@@ -10,6 +12,16 @@ public class Budget {
   private long householdId;
   private Set<Category> categories;
   private BigDecimal amount;
+
+  public Budget(long id,
+                LocalDate date,
+                BigDecimal amount,
+                long budgetId) {
+    this.id = id;
+    this.date = date;
+    this.amount = amount;
+    this.householdId = budgetId;
+  }
 
   public long getId() {
     return id;

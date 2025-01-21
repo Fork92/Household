@@ -31,15 +31,15 @@ public class UserMapper {
     }
 
     Long id = null;
-    if (user.getId() > 0) {
-      id = user.getId();
+    if (user.id() > 0) {
+      id = user.id();
     }
 
     HouseholdEntity householdEntity = null;
-    if (user.getHousehold() != null) {
-      householdEntity = HouseholdMapper.mapToEntity(user.getHousehold());
+    if (user.household() != null) {
+      householdEntity = HouseholdMapper.mapToEntity(user.household());
     }
 
-    return new UserEntity(id, user.getUsername(), user.getPasswordHash(), householdEntity);
+    return new UserEntity(id, user.username(), user.passwordHash(), householdEntity);
   }
 }
