@@ -6,8 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.Month;
-import java.time.Year;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -19,8 +18,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.becker.household.application.port.in.budgets.CreateBudgetCommand;
-import de.becker.household.application.port.out.UserRepository;
-import de.becker.household.application.port.out.households.HouseholdRepository;
+import de.becker.household.application.port.out.budgets.BudgetRepository;
+import de.becker.household.application.port.out.users.UserRepository;
 import de.becker.household.domain.exceptions.BudgetExistException;
 import de.becker.household.domain.model.Budget;
 import de.becker.household.domain.model.Household;
@@ -31,6 +30,8 @@ class CreateBudgetServiceTest {
 
   @Mock
   private UserRepository userRepository;
+  @Mock
+  private BudgetRepository budgetRepository;
   @InjectMocks
   private CreateBudgetService createBudgetService;
 
@@ -42,6 +43,7 @@ class CreateBudgetServiceTest {
     CreateBudgetCommand command = new CreateBudgetCommand(LocalDate.of(2025, 1, 1), BigDecimal.valueOf(1337),
         "testUser");
     when(userRepository.findByUsername(command.username())).thenReturn(Optional.of(expectedUser));
+    when(budgetRepository.findByHouseholdId(expectedHousehold.id())).thenReturn(Collections.emptyList());
 
     Budget actual = createBudgetService.execute(command);
     assertThat(actual).isNotNull();
@@ -52,6 +54,19 @@ class CreateBudgetServiceTest {
 
   @Test
   public void testFailedCreateNewBudgetWhenBudgetForMonthAndYearExistsInHousehold() {
+    Budget budget = new Budget(1L, LocalDate.of(2025, 1, 1), BigDecimal.valueOf(1337), 1L);
+    List<Budget> budgets = new ArrayList<>();
+    budgets.add(budget);
+    Household household = new Household(1L, new ArrayList<>());
+    User user = new User(1L, "testUser", "secret", household);
+
+    CreateBudgetCommand command = new CreateBudgetCommand(LocalDate.of(2025, 1, 1), BigDecimal.valueOf(1337),
+        "testUser");
+    when(userRepository.findByUsername(command.username())).thenReturn(Optional.of(user));
+    when(budgetRepository.findByHouseholdId(household.id())).thenReturn(budgets);
+
+    assertThatThrownBy(() -> createBudgetService.execute(command)).isInstanceOf(BudgetExistException.class)
+        .hasMessage("Budget for Date already exists");
 
   }
 

@@ -1,13 +1,11 @@
 package de.becker.household.application.usecase.budgets;
 
 import java.time.LocalDate;
-import java.time.Year;
 import java.util.Optional;
 
 import de.becker.household.application.port.in.budgets.CreateBudgetCommand;
 import de.becker.household.application.port.in.budgets.CreateBudgetUseCase;
 import de.becker.household.application.port.out.budgets.BudgetRepository;
-import de.becker.household.application.port.out.households.HouseholdRepository;
 import de.becker.household.application.port.out.users.UserRepository;
 import de.becker.household.domain.exceptions.AuthenticationException;
 import de.becker.household.domain.exceptions.BudgetExistException;
