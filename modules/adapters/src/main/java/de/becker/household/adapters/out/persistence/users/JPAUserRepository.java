@@ -2,7 +2,7 @@ package de.becker.household.adapters.out.persistence.users;
 
 import java.util.Optional;
 
-import de.becker.household.application.port.out.UserRepository;
+import de.becker.household.application.port.out.users.UserRepository;
 import de.becker.household.domain.model.User;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;

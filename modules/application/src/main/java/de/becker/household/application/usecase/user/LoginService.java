@@ -26,7 +26,7 @@ public class LoginService implements LoginUseCase {
   @Override
   public User execute(LoginCommand command) {
     User user = checkUsername(command.username());
-    checkPassword(command.password(), user.passwordHash());
+    checkPassword(command.password(), user.getPasswordHash());
     return user;
   }
 

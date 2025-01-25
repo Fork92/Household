@@ -37,19 +37,19 @@ class CreateBudgetServiceTest {
 
   @Test
   public void testCreateNewBudget() {
-    Household expectedHousehold = new Household(1L, Collections.emptyList());
+    Household expectedHousehold = new Household(1L, "TestHousehold", Collections.emptyList(), Collections.emptyList());
     User expectedUser = new User(1L, "testUser", "secret", expectedHousehold);
 
     CreateBudgetCommand command = new CreateBudgetCommand(LocalDate.of(2025, 1, 1), BigDecimal.valueOf(1337),
         "testUser");
     when(userRepository.findByUsername(command.username())).thenReturn(Optional.of(expectedUser));
-    when(budgetRepository.findByHouseholdId(expectedHousehold.id())).thenReturn(Collections.emptyList());
+    when(budgetRepository.findByHouseholdId(expectedHousehold.getId())).thenReturn(Collections.emptyList());
 
     Budget actual = createBudgetService.execute(command);
     assertThat(actual).isNotNull();
     assertThat(actual.getDate()).isEqualTo(command.date());
     assertThat(actual.getAmount()).isEqualTo(BigDecimal.valueOf(1337));
-    assertThat(actual.getHouseholdId()).isEqualTo(expectedHousehold.id());
+    assertThat(actual.getHouseholdId()).isEqualTo(expectedHousehold.getId());
   }
 
   @Test
@@ -57,13 +57,13 @@ class CreateBudgetServiceTest {
     Budget budget = new Budget(1L, LocalDate.of(2025, 1, 1), BigDecimal.valueOf(1337), 1L);
     List<Budget> budgets = new ArrayList<>();
     budgets.add(budget);
-    Household household = new Household(1L, new ArrayList<>());
+    Household household = new Household(1L, "TestHousehold", new ArrayList<>(), new ArrayList<>());
     User user = new User(1L, "testUser", "secret", household);
 
     CreateBudgetCommand command = new CreateBudgetCommand(LocalDate.of(2025, 1, 1), BigDecimal.valueOf(1337),
         "testUser");
     when(userRepository.findByUsername(command.username())).thenReturn(Optional.of(user));
-    when(budgetRepository.findByHouseholdId(household.id())).thenReturn(budgets);
+    when(budgetRepository.findByHouseholdId(household.getId())).thenReturn(budgets);
 
     assertThatThrownBy(() -> createBudgetService.execute(command)).isInstanceOf(BudgetExistException.class)
         .hasMessage("Budget for Date already exists");

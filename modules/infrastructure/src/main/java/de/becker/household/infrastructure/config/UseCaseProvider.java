@@ -30,7 +30,7 @@ public class UseCaseProvider {
   @Produces
   @ApplicationScoped
   public RegisterUseCase registerUseCase() {
-    return new RegisterService(userRepository, userPasswordEncoder, householdRepository);
+    return new RegisterService(userRepository, userPasswordEncoder);
   }
 
 }

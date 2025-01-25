@@ -47,7 +47,7 @@ public class UserController {
             .build();
       }
 
-      String token = jwtService.generateToken(Collections.emptyMap(), user.username());
+      String token = jwtService.generateToken(Collections.emptyMap(), user.getUsername());
 
       return Response.ok(new TokenJson(token))
           .build();
@@ -70,7 +70,7 @@ public class UserController {
             .build();
       }
 
-      String token = jwtService.generateToken(Collections.emptyMap(), user.username());
+      String token = jwtService.generateToken(Collections.emptyMap(), user.getUsername());
 
       return Response.ok(new TokenJson(token))
           .build();

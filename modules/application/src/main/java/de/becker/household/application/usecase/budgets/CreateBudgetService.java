@@ -28,7 +28,7 @@ public class CreateBudgetService implements CreateBudgetUseCase {
     User user = checkIfUserExist(command.username());
     checkBudgetDate(user, command.date());
 
-    return new Budget(0L, command.date(), command.budget(), user.household().id());
+    return new Budget(0L, command.date(), command.budget(), user.getHousehold().getId());
   }
 
   private User checkIfUserExist(final String username) {
@@ -41,10 +41,10 @@ public class CreateBudgetService implements CreateBudgetUseCase {
 
   private void checkBudgetDate(final User user,
       final LocalDate date) {
-    Household household = user.household();
-    household.budgets().addAll(budgetRepository.findByHouseholdId(household.id()));
+    Household household = user.getHousehold();
+    household.getBudgets().addAll(budgetRepository.findByHouseholdId(household.getId()));
 
-    Optional<Budget> optionalBudget = household.budgets()
+    Optional<Budget> optionalBudget = household.getBudgets()
         .stream()
         .filter(budget -> budget.getDate()
             .equals(date))
