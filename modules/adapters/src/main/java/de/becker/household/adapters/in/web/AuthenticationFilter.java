@@ -3,6 +3,9 @@ package de.becker.household.adapters.in.web;
 import java.io.IOException;
 import java.security.Principal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.becker.household.adapters.out.encoder.JwtService;
 import jakarta.annotation.Priority;
 import jakarta.inject.Inject;
@@ -20,6 +23,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
   @Inject
   private JwtService jwtService;
+  private Logger LOG = LoggerFactory.getLogger(AuthenticationFilter.class);
 
   @Override
   public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -31,6 +35,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     }
 
     String token = authHeader.substring("Bearer".length()).trim();
+
+    LOG.info(jwtService.parseToken(token).getSubject());
 
     if (!jwtService.validateToken(token)) {
       abortRequest(requestContext, "Token invalid");

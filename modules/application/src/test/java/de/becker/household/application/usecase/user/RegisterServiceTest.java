@@ -15,8 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.becker.household.application.port.in.user.RegisterCommand;
 import de.becker.household.application.port.out.UserPasswordEncoder;
-import de.becker.household.application.port.out.UserRepository;
-import de.becker.household.application.port.out.households.HouseholdRepository;
+import de.becker.household.application.port.out.users.UserRepository;
 import de.becker.household.domain.exceptions.RegistrationException;
 import de.becker.household.domain.model.Household;
 import de.becker.household.domain.model.User;
@@ -27,17 +26,14 @@ public class RegisterServiceTest {
   @Mock
   private UserRepository userRepository;
   @Mock
-  private HouseholdRepository householdRepository;
-  @Mock
   private UserPasswordEncoder userPasswordEncoder;
   @InjectMocks
   private RegisterService registerService;
 
   @Test
   public void testRegisterNewUser() {
-    Household expectedHousehold = new Household(1L);
+    Household expectedHousehold = new Household(1L, "TestHousehold", null, null);
     User expectedUser = new User(1L, "username", "secret", expectedHousehold);
-    when(householdRepository.save(any(Household.class))).thenReturn(expectedHousehold);
     when(userRepository.save(any(User.class))).thenReturn(expectedUser);
     when(userPasswordEncoder.encode("password")).thenReturn("secret");
 

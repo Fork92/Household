@@ -18,15 +18,16 @@ public class JPAHouseholdRepository implements HouseholdRepository {
 
   @Override
   public Household save(Household household) {
-    HouseholdEntity entity = em.merge(HouseholdMapper.mapToEntity(household));
-    return HouseholdMapper.mapToDomain(entity);
+    final HouseholdEntity entity = HouseholdMapper.mapToEntity(household, true);
+    HouseholdEntity saved = em.merge(entity);
+    return HouseholdMapper.mapToDomain(saved, true);
   }
 
   @Override
   public Household findById(long householdId) {
     HouseholdEntity entity = em.find(HouseholdEntity.class, householdId);
 
-    return HouseholdMapper.mapToDomain(entity);
+    return HouseholdMapper.mapToDomain(entity, true);
   }
 
 }

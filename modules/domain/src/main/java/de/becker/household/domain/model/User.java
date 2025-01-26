@@ -6,7 +6,7 @@ public class User {
   private String passwordHash;
   private Household household;
 
-  public User(final long id, final String username, final String passwordHash, final Household household) {
+  public User(long id, String username, String passwordHash, Household household) {
     this.id = id;
     this.username = username;
     this.passwordHash = passwordHash;

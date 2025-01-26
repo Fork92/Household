@@ -14,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.becker.household.application.port.in.user.LoginCommand;
 import de.becker.household.application.port.out.UserPasswordEncoder;
-import de.becker.household.application.port.out.UserRepository;
+import de.becker.household.application.port.out.users.UserRepository;
 import de.becker.household.domain.exceptions.AuthenticationException;
 import de.becker.household.domain.model.User;
 

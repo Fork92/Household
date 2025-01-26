@@ -2,6 +2,7 @@ package de.becker.household.adapters.out.persistence.users;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import org.junit.jupiter.api.AfterAll;
@@ -67,14 +68,14 @@ public class JPAUserRepositoryTest {
     assertThat(saved.getId()).isGreaterThan(0L);
     assertThat(saved.getUsername()).isSameAs(user.getUsername());
     assertThat(saved.getPasswordHash()).isSameAs(user.getPasswordHash());
- }
+  }
 
   @Test
   void testUpdateUser() {
     User user = new User(0L, "TestUser", "secret", null);
     User saved = repository.save(user);
-    saved.setUsername("TestUser123");
-    User updated = repository.save(saved);
+    User updated = repository
+        .save(new User(saved.getId(), "TestUser123", saved.getPasswordHash(), saved.getHousehold()));
 
     assertThat(updated.getId()).isSameAs(saved.getId());
     assertThat(updated.getUsername()).isNotSameAs(user.getUsername());
@@ -83,7 +84,8 @@ public class JPAUserRepositoryTest {
 
   @Test
   void testFindByUsername() {
-    Household household = householdRepository.save(new Household(0));
+    Household household = householdRepository
+        .save(new Household(0, "TestHousehold", Collections.emptyList(), Collections.emptyList()));
     repository.save(new User(0, "TestUser", "secret", household));
 
     Optional<User> found = repository.findByUsername("TestUser");
