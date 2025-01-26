@@ -7,7 +7,7 @@ import de.becker.household.domain.model.User;
 
 public class UserMapper {
 
-  public static User mapToDomain(final UserEntity entity) {
+  public static User mapToDomain(final UserEntity entity, final boolean withHousehold) {
     if (entity == null) {
       return null;
     }
@@ -18,14 +18,14 @@ public class UserMapper {
     }
 
     Household household = null;
-    if (entity.getHousehold() != null) {
-      household = HouseholdMapper.mapToDomain(entity.getHousehold());
+    if (entity.getHousehold() != null && withHousehold) {
+      household = HouseholdMapper.mapToDomain(entity.getHousehold(), false);
     }
 
     return new User(id, entity.getUsername(), entity.getPasswordHash(), household);
   }
 
-  public static UserEntity mapToEntity(final User user) {
+  public static UserEntity mapToEntity(final User user, final boolean withHousehold) {
     if (user == null) {
       return null;
     }
@@ -36,8 +36,8 @@ public class UserMapper {
     }
 
     HouseholdEntity householdEntity = null;
-    if (user.getHousehold() != null) {
-      householdEntity = HouseholdMapper.mapToEntity(user.getHousehold());
+    if (user.getHousehold() != null && withHousehold) {
+      householdEntity = HouseholdMapper.mapToEntity(user.getHousehold(), false);
     }
 
     return new UserEntity(id, user.getUsername(), user.getPasswordHash(), householdEntity);

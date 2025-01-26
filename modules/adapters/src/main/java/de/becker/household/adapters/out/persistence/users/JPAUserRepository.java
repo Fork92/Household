@@ -21,8 +21,9 @@ public class JPAUserRepository implements UserRepository {
 
   @Override
   public User save(User user) {
-    UserEntity entity = em.merge(UserMapper.mapToEntity(user));
-    return UserMapper.mapToDomain(entity);
+    final UserEntity entity = UserMapper.mapToEntity(user, true);
+    final UserEntity saved = em.merge(entity);
+    return UserMapper.mapToDomain(saved, true);
   }
 
   @Override
@@ -31,7 +32,7 @@ public class JPAUserRepository implements UserRepository {
       UserEntity entity = em.createNamedQuery(UserEntity.FIND_BY_USERNAME, UserEntity.class)
           .setParameter("username", username).getSingleResult();
 
-      User user = UserMapper.mapToDomain(entity);
+      User user = UserMapper.mapToDomain(entity, true);
       return Optional.ofNullable(user);
     } catch (NoResultException ex) {
       return Optional.empty();

@@ -19,7 +19,7 @@ class UserMapperTest {
   void testMapToEntity() {
     final User user = new User(123L, "TestUser", "secret",
         new Household(321L, "TestHousehold", Collections.emptyList(), Collections.emptyList()));
-    final UserEntity entity = UserMapper.mapToEntity(user);
+    final UserEntity entity = UserMapper.mapToEntity(user, true);
 
     assertThat(entity.getId()).isEqualTo(user.getId());
     assertThat(entity.getUsername()).isEqualTo(user.getUsername());
@@ -30,7 +30,7 @@ class UserMapperTest {
   @Test
   void testReturnNullInCaseOfNullUser() {
     User user = null;
-    final UserEntity entity = UserMapper.mapToEntity(user);
+    final UserEntity entity = UserMapper.mapToEntity(user, false);
 
     assertThat(entity).isNull();
   }
@@ -39,7 +39,7 @@ class UserMapperTest {
   void testMapToDomain() {
     final UserEntity entity = new UserEntity(123L, "TestUser", "secret",
         new HouseholdEntity(321L, "TestHousehold", Collections.emptyList(), Collections.emptyList()));
-    final User user = UserMapper.mapToDomain(entity);
+    final User user = UserMapper.mapToDomain(entity, true);
 
     assertThat(user.getId()).isEqualTo(entity.getId());
     assertThat(user.getUsername()).isEqualTo(entity.getUsername());
@@ -50,7 +50,7 @@ class UserMapperTest {
   @Test
   void testReturnNullInCaseOfNullEntity() {
     UserEntity entity = null;
-    final User user = UserMapper.mapToDomain(entity);
+    final User user = UserMapper.mapToDomain(entity, false);
 
     assertThat(user).isNull();
   }

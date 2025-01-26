@@ -15,35 +15,39 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class JwtService {
 
-    private final SecretKey secretKey = Jwts.SIG.HS512.key()
-                                                      .build();
+  private final SecretKey secretKey = Jwts.SIG.HS512.key()
+      .build();
 
-    public String generateToken(final Map<String, Object> claims,
-                                final String subject) {
-        return Jwts.builder()
-                   .claims(claims)
-                   .subject(subject)
-                   .issuedAt(Date.from(Instant.now()))
-                   .expiration(Date.from(Instant.now()
-                                                .plus(Duration.ofDays(1))))
-                   .signWith(secretKey)
-                   .compact();
-    }
+  public String generateToken(final Map<String, Object> claims,
+      final String subject) {
+    return Jwts.builder()
+        .claims(claims)
+        .subject(subject)
+        .issuedAt(Date.from(Instant.now()))
+        .expiration(Date.from(Instant.now()
+            .plus(Duration.ofDays(1))))
+        .signWith(secretKey)
+        .compact();
+  }
 
-    public Claims parseToken(final String token) {
-        return Jwts.parser()
-                   .verifyWith(secretKey)
-                   .build()
-                   .parseSignedClaims(token)
-                   .getPayload();
-    }
+  public Claims parseToken(final String token) {
+    return Jwts.parser()
+        .verifyWith(secretKey)
+        .build()
+        .parseSignedClaims(token)
+        .getPayload();
+  }
 
-    public boolean validateToken(final String token) {
-        try {
-            Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token);
-            return true;
-        } catch (JwtException ex) {
-            return false;
-        }
+  public boolean validateToken(final String token) {
+    try {
+      Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token);
+      return true;
+    } catch (JwtException ex) {
+      return false;
     }
+  }
+
+  public String getSubject(final String token) {
+    return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getSubject();
+  }
 }
