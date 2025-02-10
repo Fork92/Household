@@ -17,6 +17,7 @@ public class HouseholdMapper {
 
     List<User> users = new ArrayList<>();
     if (!entity.getUsers().isEmpty() && withUser) {
+      entity.getUsers().size();
       for (UserEntity user : entity.getUsers()) {
         users.add(UserMapper.mapToDomain(user, false));
       }

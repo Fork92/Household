@@ -1,12 +1,13 @@
 package de.becker.household.domain.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Household {
   private long id;
   private String name;
-  private List<Budget> budgets;
-  private List<User> users;
+  private List<Budget> budgets = new ArrayList<>();;
+  private List<User> users = new ArrayList<>();
 
   public Household(final long id, final String name, final List<Budget> budgets, final List<User> users) {
     this.id = id;
@@ -45,6 +46,10 @@ public class Household {
 
   public void setUsers(List<User> users) {
     this.users = users;
+  }
+
+  public void addUser(User user) {
+    this.users.add(user);
   }
 
 }
